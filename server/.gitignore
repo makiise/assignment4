@@ -10,5 +10,5 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# Environment variables file (if you use one later)
+# Environment variables file (if you use one)
 .env
