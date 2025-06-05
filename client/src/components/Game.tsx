@@ -1,4 +1,3 @@
-// client/src/components/Game.tsx
 import React, { useEffect, useRef, useState } from 'react';
 import io, { Socket } from 'socket.io-client';
 import { GameState, Player, Ball, CANVAS_WIDTH, CANVAS_HEIGHT, PADDLE_WIDTH, PADDLE_HEIGHT, BALL_RADIUS } from '../types';
@@ -32,7 +31,7 @@ const Game: React.FC<GameProps> = () => {
       console.log('Game starting!', data);
       setPlayerRole(data.playerRole);
       setRoomId(data.roomId);
-      setGameState(data.gameState); // Initial game state from server
+      setGameState(data.gameState); 
       setMessage(`Game started! You are ${data.playerRole}. Room: ${data.roomId}`);
     });
 
@@ -54,8 +53,7 @@ const Game: React.FC<GameProps> = () => {
 
     newSocket.on('opponentDisconnected', (data: { message: string }) => {
         setMessage(data.message + " Refresh to find a new game.");
-        setPlayerRole('spectator'); // Or some other state to indicate game ended
-        // Consider stopping local game loop or rendering if any client-side animation exists
+        setPlayerRole('spectator'); 
     });
 
     newSocket.on('disconnect', () => {
@@ -71,7 +69,6 @@ const Game: React.FC<GameProps> = () => {
     };
   }, []);
 
-  // Keyboard input handler
   useEffect(() => {
     if (!socket || !roomId || !playerRole || playerRole === 'spectator') return;
 
@@ -92,13 +89,11 @@ const Game: React.FC<GameProps> = () => {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [socket, roomId, playerRole]); // Dependencies for re-binding if these change
-
-  // Drawing logic
+  }, [socket, roomId, playerRole]); 
   useEffect(() => {
     const canvas = canvasRef.current;
-    if (!canvas || !gameState) { // If no game state, don't draw
-        // Optionally, clear canvas or show a "loading" state on canvas
+    if (!canvas || !gameState) { 
+        
         if (canvas && canvas.getContext('2d')) {
             const context = canvas.getContext('2d')!;
             context.fillStyle = 'black';
@@ -115,18 +110,15 @@ const Game: React.FC<GameProps> = () => {
     const context = canvas.getContext('2d');
     if (!context) return;
 
-    // Clear canvas
     context.fillStyle = 'black';
     context.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
-    // Draw paddles
     gameState.players.forEach(player => {
       context.fillStyle = 'white';
       const paddleX = player.id === 'player1' ? 0 : CANVAS_WIDTH - PADDLE_WIDTH;
       context.fillRect(paddleX, player.y, PADDLE_WIDTH, PADDLE_HEIGHT);
     });
 
-    // Draw ball
     const { ball } = gameState;
     context.beginPath();
     context.arc(ball.x, ball.y, BALL_RADIUS, 0, Math.PI * 2);
@@ -134,7 +126,6 @@ const Game: React.FC<GameProps> = () => {
     context.fill();
     context.closePath();
 
-    // Draw scores
     context.font = '30px Arial';
     context.fillStyle = 'white';
     context.textAlign = 'center';
@@ -143,7 +134,7 @@ const Game: React.FC<GameProps> = () => {
     if (player1) context.fillText(`${player1.score}`, CANVAS_WIDTH / 4, 50);
     if (player2) context.fillText(`${player2.score}`, (CANVAS_WIDTH / 4) * 3, 50);
 
-  }, [gameState, message]); // Re-draw when gameState or message changes
+  }, [gameState, message]); 
 
 
   return (

@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import Game from './components/Game'; // Make sure this path is correct
+import Game from './components/Game'; 
 
 function App() {
   return (
@@ -13,3 +13,5 @@ function App() {
 }
 
 export default App;
+
+
